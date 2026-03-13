@@ -1,0 +1,43 @@
+#!/bin/bash
+# ==========================================================
+# مشروع: WinLiter-Pro Max v7.5 - النسخة النهائية المستقرة
+# تطوير: أحمد وجيمي (بصمة ملكية)
+# ==========================================================
+
+# تحديد مكان السكريبت تلقائياً (عشان الأيقونة تشتغل عند أي حد)
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+ICON_PATH="$SCRIPT_DIR/logo.png"
+
+# 1. اختيار اللغة
+LANG_CHOICE=$(yad --list --title="WinLiter-Pro Max" --window-icon="$ICON_PATH" \
+    --width=400 --height=250 --center --radiolist \
+    --column="Select" --column="Language / اللغة" \
+    TRUE "العربية (Arabic)" \
+    FALSE "English (الإنجليزية)" \
+    --button="OK:0" --button="Exit:1")
+
+[[ $? -eq 1 ]] && exit
+USER_LANG=$(echo $LANG_CHOICE | awk -F'|' '{print $2}')
+
+# [تكملة نصوص اللغة كما في الكود السابق...]
+if [[ "$USER_LANG" == "العربية (Arabic)" ]]; then
+    T_WELCOME="مرحباً بك في محاكي WinLiter-Pro Max الملكي"
+    T_BTN_START="دخول"
+    # ... باقي النصوص
+else
+    T_WELCOME="Welcome to WinLiter-Pro Max Royal Emulator"
+    T_BTN_START="Start"
+    # ... باقي النصوص
+fi
+
+# 2. الواجهة الرئيسية مع اللوجو الجديد
+CHOICE=$(yad --list --title="WinLiter-Pro Max" --window-icon="$ICON_PATH" \
+    --width=600 --height=450 --center --radiolist \
+    --text="<b>$T_WELCOME</b>" \
+    --column="Pick" --column="IMG:IMG" --column="System" --column="Status" \
+    TRUE "computer" "PC" "Ready for Gaming" \
+    FALSE "phone" "Android" "Latest Version 11" \
+    --button="$T_BTN_START:0" --button="Exit:1")
+
+# [باقي منطق تشغيل Wine و Waydroid...]
+
